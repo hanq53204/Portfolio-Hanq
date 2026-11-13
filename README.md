@@ -57,7 +57,10 @@ Portfolio-Hanq/
 ├── package.json
 ├── tailwind.config.js
 ├── tsconfig.json
+├── vercel.json                         # HTTP Security Headers & cấu hình SPA Rewrites cho Vercel
 ├── vite.config.ts
+├── public/
+│   └── favicon.svg                     # Icon vector nhận diện tab trình duyệt
 └── src/
     ├── context/
     │   └── AppContext.tsx              # State toàn cục: language ('vi' | 'en') & theme ('dark' | 'light')

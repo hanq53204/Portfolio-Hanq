@@ -113,3 +113,12 @@
 - Chuẩn hóa helper `getWeb3FormsAccessKey()` ép kiểm tra kiểu chuỗi + `.trim()`, đồng thời cảnh báo rõ qua `console.warn` khi mount và `console.error` khi submit nếu biến môi trường bị thiếu/`undefined` trên Vercel.
 - Xác nhận payload JSON gửi tới `https://api.web3forms.com/submit` kèm đầy đủ headers (`Content-Type: application/json`, `Accept: application/json`) và trường `botcheck: false`.
 - Bổ sung log chẩn đoán (`console.error` / `console.warn`) gồm HTTP `status`, `statusText`, `data.message`, lỗi parse JSON và lỗi mạng để theo dõi trực tiếp qua DevTools (F12) trên Vercel.
+
+### Kiểm duyệt Production Readiness, Security Headers & SEO/A11y (`2026-11-13`)
+- **Bảo mật Production (`vercel.json`):**
+  - Tạo `vercel.json` cấu hình các HTTP Security Headers (`X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy: camera=(), microphone=(), geolocation=()`) và `rewrites` SPA chuẩn cho Vite; giữ nguyên tương thích với inline theme script và style của Framer Motion.
+  - Xác nhận `.env` bị `.gitignore` chặn, không có `any`, `dangerouslySetInnerHTML`, hay thẻ `target="_blank"` thiếu `rel="noopener noreferrer"`.
+  - Xác nhận `AppContext.tsx` đã bọc toàn bộ `localStorage.getItem`/`setItem` trong `try/catch`.
+- **SEO, Open Graph & Accessibility:**
+  - Cập nhật `index.html` với canonical URL (`https://portfolio-hanq-two.vercel.app/`), thẻ `author`, `theme-color`, bộ Open Graph (`og:type`, `og:title`, `og:description`, `og:url`, `og:locale`, `og:site_name`), Twitter Card và `public/favicon.svg`.
+  - Bổ sung `metaDescription` và `nav.skipToContentLabel` song ngữ (`VI` / `EN`) trong `src/types/index.ts` & `src/data/portfolioData.ts`, đồng bộ `meta[name="description"]` khi chuyển ngôn ngữ và thêm liên kết Skip-to-Content trong `src/App.tsx` + phím `Escape` đóng mobile menu trong `src/components/layout/Navbar.tsx`.

@@ -20,6 +20,7 @@ export interface NavLinkItem {
 export interface NavData {
   brandName: string;
   brandTag: string;
+  skipToContentLabel: string;
   links: NavLinkItem[];
   themeToLightLabel: string;
   themeToDarkLabel: string;
@@ -193,6 +194,7 @@ export interface FooterData {
 
 export interface PortfolioContent {
   metaTitle: string;
+  metaDescription: string;
   nav: NavData;
   hero: HeroData;
   terminal: TerminalData;

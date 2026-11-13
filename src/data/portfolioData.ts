@@ -3,9 +3,12 @@ import type { BilingualPortfolioData } from '../types';
 export const portfolioData: BilingualPortfolioData = {
   vi: {
     metaTitle: 'Nguyen Quang Ha | System & Infrastructure Security',
+    metaDescription:
+      'Portfolio cá nhân của Nguyen Quang Ha — System Engineering, Infrastructure Security, Monitoring & SecOps.',
     nav: {
       brandName: 'Nguyen Quang Ha',
       brandTag: 'secops.sys',
+      skipToContentLabel: 'Chuyển đến nội dung chính',
       links: [
         { id: 'home', label: 'Trang chủ', href: '#home' },
         { id: 'about', label: 'Giới thiệu', href: '#about' },
@@ -363,9 +366,12 @@ export const portfolioData: BilingualPortfolioData = {
   },
   en: {
     metaTitle: 'Nguyen Quang Ha | System & Infrastructure Security',
+    metaDescription:
+      'Personal portfolio of Nguyen Quang Ha — System Engineering, Infrastructure Security, Monitoring & SecOps.',
     nav: {
       brandName: 'Nguyen Quang Ha',
       brandTag: 'secops.sys',
+      skipToContentLabel: 'Skip to main content',
       links: [
         { id: 'home', label: 'Home', href: '#home' },
         { id: 'about', label: 'About', href: '#about' },
