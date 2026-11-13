@@ -42,6 +42,11 @@ const initialFormValues: FormValues = {
 const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+const getWeb3FormsAccessKey = (): string => {
+  const rawAccessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
+  return typeof rawAccessKey === 'string' ? rawAccessKey.trim() : '';
+};
+
 export const ContactSection: React.FC = () => {
   const { language } = useApp();
   const { contact } = portfolioData[language];
@@ -56,6 +61,12 @@ export const ContactSection: React.FC = () => {
   const copyTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
+    if (!getWeb3FormsAccessKey()) {
+      console.warn(
+        '[ContactSection] VITE_WEB3FORMS_ACCESS_KEY is missing or empty. Configure it in Vercel Environment Variables and trigger a Redeploy.'
+      );
+    }
+
     return () => {
       if (copyTimerRef.current) window.clearTimeout(copyTimerRef.current);
     };
@@ -104,14 +115,21 @@ export const ContactSection: React.FC = () => {
       return;
     }
 
-    const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY?.trim();
+    const accessKey = getWeb3FormsAccessKey();
+    if (!accessKey) {
+      console.error(
+        '[ContactSection] Cannot submit form: VITE_WEB3FORMS_ACCESS_KEY is undefined or empty in this build.'
+      );
+      setHasError(true);
+      return;
+    }
+
     const trimmedName = formValues.name.trim();
     const trimmedEmail = formValues.email.trim();
     const trimmedSubject = formValues.subject.trim();
     const trimmedMessage = formValues.message.trim();
 
     const isValidPayload =
-      Boolean(accessKey) &&
       trimmedName.length >= 2 &&
       trimmedName.length <= 100 &&
       trimmedEmail.length <= 150 &&
@@ -122,6 +140,7 @@ export const ContactSection: React.FC = () => {
       trimmedMessage.length <= 2000;
 
     if (!isValidPayload) {
+      console.warn('[ContactSection] Form submission blocked by client validation.');
       setHasError(true);
       return;
     }
@@ -150,15 +169,30 @@ export const ContactSection: React.FC = () => {
         }),
       });
 
-      const data = (await response.json()) as { success?: boolean };
+      let data: { success?: boolean; message?: string } | null = null;
+      try {
+        data = (await response.json()) as { success?: boolean; message?: string };
+      } catch (parseError) {
+        console.error('[ContactSection] Failed to parse Web3Forms JSON response:', {
+          status: response.status,
+          statusText: response.statusText,
+          parseError,
+        });
+      }
 
-      if (response.ok && data.success) {
+      if (response.ok && data?.success) {
         setIsSubmitted(true);
         setFormValues(initialFormValues);
       } else {
+        console.error('[ContactSection] Web3Forms API error:', {
+          status: response.status,
+          statusText: response.statusText,
+          message: data?.message ?? 'No error message returned by server',
+        });
         setHasError(true);
       }
-    } catch {
+    } catch (error) {
+      console.error('[ContactSection] Web3Forms request failed:', error);
       setHasError(true);
     } finally {
       setIsSubmitting(false);

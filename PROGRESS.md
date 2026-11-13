@@ -107,3 +107,9 @@
 - **Tài liệu & Build:**
   - Cập nhật cây thư mục và hướng dẫn tạo `.env` từ `.env.example` trong `README.md`.
   - Chạy `npm run lint` (`tsc --noEmit`) và `npm run build` (`tsc -b && vite build`) thành công với **0 lỗi** (1945 modules, CSS `36.10 kB`, JS `367.55 kB`).
+
+### Chẩn đoán & Tối ưu Web3Forms cho môi trường Production / Vercel (`2026-11-13`)
+- Kiểm tra đồng bộ tên biến `VITE_WEB3FORMS_ACCESS_KEY` giữa `.env`, `.env.example`, `src/vite-env.d.ts` và `src/components/sections/ContactSection.tsx`.
+- Chuẩn hóa helper `getWeb3FormsAccessKey()` ép kiểm tra kiểu chuỗi + `.trim()`, đồng thời cảnh báo rõ qua `console.warn` khi mount và `console.error` khi submit nếu biến môi trường bị thiếu/`undefined` trên Vercel.
+- Xác nhận payload JSON gửi tới `https://api.web3forms.com/submit` kèm đầy đủ headers (`Content-Type: application/json`, `Accept: application/json`) và trường `botcheck: false`.
+- Bổ sung log chẩn đoán (`console.error` / `console.warn`) gồm HTTP `status`, `statusText`, `data.message`, lỗi parse JSON và lỗi mạng để theo dõi trực tiếp qua DevTools (F12) trên Vercel.
