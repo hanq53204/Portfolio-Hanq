@@ -4,25 +4,15 @@
 
 @layer base {
   :root {
-    --bg-primary: #f8fafc;
-    --surface-card: #ffffff;
-    --border-default: #e2e8f0;
-    --accent-primary: #059669;
-    --accent-secondary: #0891b2;
-    --text-primary: #0f172a;
-    --text-secondary: #475569;
-    --grid-line: rgba(15, 23, 42, 0.045);
+    --bg-primary: #f6f8fa;
+    --text-primary: #1f2328;
+    --dot-color: rgba(31, 35, 40, 0.085);
   }
 
   .dark {
-    --bg-primary: #090d16;
-    --surface-card: #111827;
-    --border-default: rgba(30, 41, 59, 0.8);
-    --accent-primary: #10b981;
-    --accent-secondary: #06b6d4;
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --grid-line: rgba(148, 163, 184, 0.055);
+    --bg-primary: #0d1117;
+    --text-primary: #f0f6fc;
+    --dot-color: rgba(139, 148, 158, 0.16);
   }
 
   html {
@@ -37,7 +27,7 @@
     transition: background-color 200ms ease-out, color 200ms ease-out;
   }
 
-  /* Custom technical scrollbar */
+  /* Custom scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -48,38 +38,27 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: rgba(148, 163, 184, 0.35);
+    background: rgba(87, 96, 106, 0.35);
     border-radius: 9999px;
   }
 
   .dark ::-webkit-scrollbar-thumb {
-    background: rgba(51, 65, 85, 0.8);
+    background: #30363d;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(16, 185, 129, 0.65);
+    background: #3b82f6;
   }
 }
 
 @layer utilities {
-  .bg-tech-grid {
-    background-image:
-      linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
-      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
-    background-size: 40px 40px;
-  }
-
-  .bg-dot-matrix {
-    background-image: radial-gradient(var(--grid-line) 1.25px, transparent 1.25px);
+  .bg-dot-grid {
+    background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
     background-size: 24px 24px;
   }
 
-  .glass-panel {
-    @apply bg-white/85 dark:bg-slate-900/70 backdrop-blur-xl border border-slate-200/90 dark:border-slate-800/80 shadow-glass-light dark:shadow-glass-dark;
-  }
-
   .bento-card {
-    @apply rounded-2xl bg-white dark:bg-slate-900/60 dark:backdrop-blur-xl border border-slate-200 dark:border-slate-800/80 shadow-sm dark:shadow-none transition-colors duration-200 hover:border-emerald-600/50 dark:hover:border-emerald-500/50;
+    @apply rounded-2xl bg-white dark:bg-[#161B22] border border-[#D0D7DE] dark:border-[#30363D] dark:border-t-white/10 shadow-sm dark:shadow-[0_8px_24px_rgba(0,0,0,0.22)] transition-colors duration-200 hover:border-[#AFB8C1] dark:hover:bg-[#1C2128] dark:hover:border-blue-500/40 dark:hover:border-t-blue-400/30;
   }
 }
 
@@ -96,4 +75,3 @@
     transition-duration: 0.01ms !important;
   }
 }
-

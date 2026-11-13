@@ -25,18 +25,17 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
       transition={{ duration: 0.35, ease: 'easeOut' }}
       className={`flex flex-col space-y-2.5 max-w-3xl ${alignmentClasses}`}
     >
-      <p className="font-mono text-xs sm:text-sm font-semibold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
+      <span className="inline-flex items-center px-2.5 py-1 rounded-lg font-mono text-xs font-semibold uppercase tracking-wider bg-blue-500/10 text-blue-700 dark:text-blue-400 border border-blue-500/20">
         {eyebrow}
-      </p>
-      <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-slate-50 leading-tight">
+      </span>
+      <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-[#1F2328] dark:text-[#F0F6FC] leading-tight">
         {title}
       </h2>
       {subtitle && (
-        <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
+        <p className="text-base sm:text-lg text-[#57606A] dark:text-[#8B949E] leading-relaxed">
           {subtitle}
         </p>
       )}
     </motion.div>
   );
 };
-

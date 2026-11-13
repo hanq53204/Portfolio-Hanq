@@ -50,6 +50,7 @@ Dự án được tổ chức và triển khai theo quy trình **Context-Driven 
 
 ```text
 Portfolio-Hanq/
+├── .env.example                        # Mẫu biến môi trường (Web3Forms Access Key)
 ├── PRD.md, ARCHITECTURE.md, DESIGN.md, RULES.md, TASKS.md, PROGRESS.md
 ├── README.md
 ├── index.html
@@ -62,25 +63,26 @@ Portfolio-Hanq/
     │   └── AppContext.tsx              # State toàn cục: language ('vi' | 'en') & theme ('dark' | 'light')
     ├── components/
     │   ├── layout/
-    │   │   ├── Navbar.tsx              # Floating Glassmorphism Navbar + Scroll-Spy + VI/EN + Dark/Light
+    │   │   ├── Navbar.tsx              # Floating Navbar + Scroll Progress Bar + Scroll-Spy + VI/EN + Dark/Light
     │   │   └── Footer.tsx              # Chân trang kèm System Status & liên kết nhanh
     │   ├── sections/
     │   │   ├── HeroSection.tsx         # Giới thiệu tổng quan + CTA + Terminal
     │   │   ├── AboutSection.tsx        # Câu chuyện nghề nghiệp + Bento Grid 4 nhóm kỹ năng
     │   │   ├── ProjectsSection.tsx     # Bộ lọc Tag + Lưới dự án + Modal chi tiết kiến trúc
-    │   │   ├── ExperienceSection.tsx   # Timeline dọc phát sáng theo cuộn trang
-    │   │   └── ContactSection.tsx      # Kênh kết nối nhanh (Copy icon) + Form liên hệ
+    │   │   ├── ExperienceSection.tsx   # Timeline dọc tương tác theo cuộn trang
+    │   │   └── ContactSection.tsx      # Kênh kết nối nhanh + Form Web3Forms kèm chống spam
     │   └── ui/
-    │       ├── InteractiveTerminal.tsx # Cửa sổ Ubuntu Terminal tương tác song ngữ
-    │       ├── ProjectCard.tsx         # Thẻ dự án với hiệu ứng Hover Glow
+    │       ├── InteractiveTerminal.tsx # Cửa sổ Ubuntu Terminal tương tác kèm Syntax Highlighting
+    │       ├── ProjectCard.tsx         # Thẻ dự án với semantic tinted badges
     │       └── SectionHeading.tsx      # Tiêu đề đồng bộ giữa các phân khu
     ├── data/
     │   └── portfolioData.ts            # Nguồn dữ liệu song ngữ duy nhất (nhánh `vi` và `en`)
     ├── types/
     │   └── index.ts                    # Định nghĩa TypeScript interfaces
+    ├── vite-env.d.ts                   # Khai báo type cho biến môi trường Vite (`VITE_*`)
     ├── App.tsx
     ├── main.tsx
-    └── index.css                       # CSS Variables, lưới kỹ thuật & quy tắc Dark/Light Mode
+    └── index.css                       # CSS Variables, dot-grid nền & quy tắc Dark/Light Mode
 ```
 
 ---
@@ -101,7 +103,11 @@ cd Portfolio-Hanq
 # 2. Cài đặt toàn bộ dependencies
 npm install
 
-# 3. Khởi chạy môi trường phát triển (Development Server)
+# 3. Tạo file biến môi trường .env từ mẫu (để kích hoạt gửi mail qua Web3Forms)
+cp .env.example .env
+# Mở .env và điền giá trị VITE_WEB3FORMS_ACCESS_KEY của bạn
+
+# 4. Khởi chạy môi trường phát triển (Development Server)
 npm run dev
 ```
 
@@ -123,4 +129,13 @@ npm run preview
 ## Tùy biến nội dung
 
 Để cập nhật thông tin cá nhân, thêm dự án thực chiến, đường dẫn CV PDF hoặc cột mốc kinh nghiệm mới, bạn chỉ cần chỉnh sửa hai nhánh `vi` và `en` trong [`src/data/portfolioData.ts`](src/data/portfolioData.ts) — toàn bộ giao diện và Terminal tương tác sẽ tự động cập nhật theo.
+
+---
+
+## Liên hệ
+
+- **Email:** [ha.nq53204@gmail.com](mailto:ha.nq53204@gmail.com)
+- **GitHub:** [https://github.com/hanq53204](https://github.com/hanq53204)
+- **LinkedIn:** [https://www.linkedin.com/in/qh8/](https://www.linkedin.com/in/qh8/)
+
 

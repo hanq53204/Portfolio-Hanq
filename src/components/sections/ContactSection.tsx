@@ -1,15 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
+  AlertCircle,
   Check,
   CheckCircle2,
   Copy,
   ExternalLink,
   Github,
   Linkedin,
+  Loader2,
   Mail,
   MapPin,
-  Radio,
   RotateCcw,
   Send,
 } from 'lucide-react';
@@ -38,22 +39,25 @@ const initialFormValues: FormValues = {
   message: '',
 };
 
+const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export const ContactSection: React.FC = () => {
   const { language } = useApp();
   const { contact } = portfolioData[language];
 
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [formValues, setFormValues] = useState<FormValues>(initialFormValues);
+  const [botcheck, setBotcheck] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   const copyTimerRef = useRef<number | null>(null);
-  const submitTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
     return () => {
       if (copyTimerRef.current) window.clearTimeout(copyTimerRef.current);
-      if (submitTimerRef.current) window.clearTimeout(submitTimerRef.current);
     };
   }, []);
 
@@ -86,22 +90,84 @@ export const ContactSection: React.FC = () => {
   ) => {
     const { name, value } = e.target;
     setFormValues((prev) => ({ ...prev, [name]: value }));
+    if (hasError) setHasError(false);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (isSubmitting) return;
 
-    setIsSubmitting(true);
-    submitTimerRef.current = window.setTimeout(() => {
-      setIsSubmitting(false);
+    // Honeypot spam trap
+    if (botcheck) {
       setIsSubmitted(true);
       setFormValues(initialFormValues);
-    }, 450);
+      return;
+    }
+
+    const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY?.trim();
+    const trimmedName = formValues.name.trim();
+    const trimmedEmail = formValues.email.trim();
+    const trimmedSubject = formValues.subject.trim();
+    const trimmedMessage = formValues.message.trim();
+
+    const isValidPayload =
+      Boolean(accessKey) &&
+      trimmedName.length >= 2 &&
+      trimmedName.length <= 100 &&
+      trimmedEmail.length <= 150 &&
+      EMAIL_PATTERN.test(trimmedEmail) &&
+      trimmedSubject.length >= 2 &&
+      trimmedSubject.length <= 150 &&
+      trimmedMessage.length >= 10 &&
+      trimmedMessage.length <= 2000;
+
+    if (!isValidPayload) {
+      setHasError(true);
+      return;
+    }
+
+    setHasError(false);
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch(WEB3FORMS_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: accessKey,
+          botcheck: false,
+          subject: `[Portfolio Contact] Tin nhắn mới từ ${trimmedName}`,
+          from_name: trimmedName,
+          name: trimmedName,
+          email: trimmedEmail,
+          topic: trimmedSubject,
+          message: trimmedSubject
+            ? `[${trimmedSubject}]\n\n${trimmedMessage}`
+            : trimmedMessage,
+        }),
+      });
+
+      const data = (await response.json()) as { success?: boolean };
+
+      if (response.ok && data.success) {
+        setIsSubmitted(true);
+        setFormValues(initialFormValues);
+      } else {
+        setHasError(true);
+      }
+    } catch {
+      setHasError(true);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleResetForm = () => {
     setIsSubmitted(false);
+    setHasError(false);
   };
 
   return (
@@ -129,14 +195,14 @@ export const ContactSection: React.FC = () => {
             <div className="bento-card p-5 sm:p-6 space-y-4">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-start gap-3">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-600/10 dark:bg-cyan-500/15 border border-cyan-600/25 dark:border-cyan-500/30 text-cyan-700 dark:text-cyan-400 shrink-0">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 shrink-0">
                     <MapPin className="h-5 w-5" aria-hidden="true" />
                   </span>
                   <div className="space-y-0.5">
-                    <p className="font-mono text-[11px] uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                    <p className="font-mono text-[11px] uppercase tracking-wider text-[#57606A] dark:text-[#8B949E]">
                       {contact.locationLabel}
                     </p>
-                    <p className="text-sm sm:text-base font-semibold text-slate-900 dark:text-slate-100">
+                    <p className="text-sm sm:text-base font-semibold text-[#1F2328] dark:text-[#F0F6FC]">
                       {contact.locationValue}
                     </p>
                   </div>
@@ -155,10 +221,10 @@ export const ContactSection: React.FC = () => {
                       ? contact.copiedLabel
                       : `${contact.copyLabel} ${contact.locationLabel}`
                   }
-                  className={`flex h-9 w-9 items-center justify-center rounded-xl border cursor-pointer transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 shrink-0 ${
+                  className={`flex h-9 w-9 items-center justify-center rounded-xl border cursor-pointer transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 shrink-0 ${
                     copiedId === 'location'
-                      ? 'bg-emerald-600/10 dark:bg-emerald-500/15 border-emerald-600/40 dark:border-emerald-500/50 text-emerald-700 dark:text-emerald-400'
-                      : 'bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-emerald-600/50 dark:hover:border-emerald-500/50 hover:text-emerald-700 dark:hover:text-emerald-300'
+                      ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-400'
+                      : 'bg-[#F6F8FA] dark:bg-[#0D1117] text-[#57606A] dark:text-[#8B949E] border-[#D0D7DE] dark:border-[#30363D] hover:border-blue-500/50 hover:text-blue-600 dark:hover:text-blue-400'
                   }`}
                 >
                   {copiedId === 'location' ? (
@@ -169,12 +235,12 @@ export const ContactSection: React.FC = () => {
                 </button>
               </div>
 
-              <div className="pt-3 border-t border-slate-200/80 dark:border-slate-800/80 flex items-center gap-2.5">
-                <Radio
-                  className="h-4 w-4 text-emerald-700 dark:text-emerald-400 shrink-0"
+              <div className="pt-3 border-t border-[#D0D7DE] dark:border-[#30363D] flex items-center gap-2.5">
+                <span
                   aria-hidden="true"
+                  className="h-2 w-2 rounded-full bg-emerald-500 shrink-0"
                 />
-                <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                <p className="text-xs sm:text-sm text-[#57606A] dark:text-[#8B949E]">
                   <span className="font-mono font-semibold text-emerald-700 dark:text-emerald-400">
                     {contact.availabilityLabel}:
                   </span>{' '}
@@ -185,7 +251,7 @@ export const ContactSection: React.FC = () => {
 
             {/* Social Channel Cards */}
             <div className="space-y-3">
-              <p className="font-mono text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 px-1">
+              <p className="font-mono text-xs font-semibold uppercase tracking-wider text-[#57606A] dark:text-[#8B949E] px-1">
                 {contact.socialTitle}
               </p>
 
@@ -201,20 +267,20 @@ export const ContactSection: React.FC = () => {
                       target={item.id === 'email' ? undefined : '_blank'}
                       rel={item.id === 'email' ? undefined : 'noopener noreferrer'}
                       aria-label={`${contact.openLinkLabel}: ${item.label}`}
-                      className="group flex items-center gap-3.5 min-w-0 flex-1 cursor-pointer rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+                      className="group flex items-center gap-3.5 min-w-0 flex-1 cursor-pointer rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                     >
-                      <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-600/10 dark:bg-emerald-500/15 border border-emerald-600/25 dark:border-emerald-500/30 text-emerald-700 dark:text-emerald-400 shrink-0 transition-colors duration-200 group-hover:border-emerald-500/60">
+                      <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 shrink-0 transition-colors duration-200 group-hover:border-blue-500/40">
                         {socialIconMap[item.id]}
                       </span>
                       <div className="min-w-0">
-                        <p className="font-mono text-[11px] uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1">
+                        <p className="font-mono text-[11px] uppercase tracking-wider text-[#57606A] dark:text-[#8B949E] flex items-center gap-1">
                           <span>{item.label}</span>
                           <ExternalLink
-                            className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                            className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-blue-600 dark:text-blue-400"
                             aria-hidden="true"
                           />
                         </p>
-                        <p className="text-sm font-semibold text-slate-900 dark:text-slate-100 truncate group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors duration-200">
+                        <p className="text-sm font-semibold text-[#1F2328] dark:text-[#F0F6FC] group-hover:text-blue-600 dark:group-hover:text-blue-400 truncate transition-colors duration-200">
                           {item.value}
                         </p>
                       </div>
@@ -225,10 +291,10 @@ export const ContactSection: React.FC = () => {
                       onClick={() => handleCopy(item.id, item.value)}
                       aria-label={isCopied ? contact.copiedLabel : `${contact.copyLabel} ${item.label}`}
                       title={isCopied ? contact.copiedLabel : `${contact.copyLabel} ${item.label}`}
-                      className={`flex h-9 w-9 items-center justify-center rounded-xl border cursor-pointer transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 shrink-0 ${
+                      className={`flex h-9 w-9 items-center justify-center rounded-xl border cursor-pointer transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 shrink-0 ${
                         isCopied
-                          ? 'bg-emerald-600/10 dark:bg-emerald-500/15 border-emerald-600/40 dark:border-emerald-500/50 text-emerald-700 dark:text-emerald-400'
-                          : 'bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-emerald-600/50 dark:hover:border-emerald-500/50 hover:text-emerald-700 dark:hover:text-emerald-300'
+                          ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-400'
+                          : 'bg-[#F6F8FA] dark:bg-[#0D1117] text-[#57606A] dark:text-[#8B949E] border-[#D0D7DE] dark:border-[#30363D] hover:border-blue-500/50 hover:text-blue-600 dark:hover:text-blue-400'
                       }`}
                     >
                       {isCopied ? (
@@ -251,7 +317,7 @@ export const ContactSection: React.FC = () => {
             transition={{ duration: 0.35, delay: 0.08, ease: 'easeOut' }}
             className="lg:col-span-7 bento-card p-6 sm:p-8"
           >
-            <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-50 mb-6">
+            <h3 className="text-lg sm:text-xl font-bold text-[#1F2328] dark:text-[#F0F6FC] mb-6">
               {contact.form.title}
             </h3>
 
@@ -264,18 +330,18 @@ export const ContactSection: React.FC = () => {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.98 }}
                     transition={{ duration: 0.25, ease: 'easeOut' }}
-                    className="rounded-2xl bg-emerald-600/10 dark:bg-emerald-500/10 border border-emerald-600/25 dark:border-emerald-500/30 p-6 sm:p-8 text-center space-y-4"
+                    className="rounded-2xl bg-emerald-500/[0.08] border border-emerald-500/25 p-6 sm:p-8 text-center space-y-4"
                   >
-                    <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-600/15 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400">
+                    <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
                       <CheckCircle2 className="h-6 w-6" aria-hidden="true" />
                     </div>
-                    <p className="text-base sm:text-lg font-semibold text-slate-900 dark:text-slate-100">
+                    <p className="text-base sm:text-lg font-semibold text-[#1F2328] dark:text-[#F0F6FC]">
                       {contact.form.successMessage}
                     </p>
                     <button
                       type="button"
                       onClick={handleResetForm}
-                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-700 hover:border-emerald-600/50 dark:hover:border-emerald-500/50 cursor-pointer transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold bg-white dark:bg-[#0D1117] text-[#1F2328] dark:text-[#F0F6FC] border border-[#D0D7DE] dark:border-[#30363D] hover:border-blue-500/50 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                     >
                       <RotateCcw className="h-4 w-4" aria-hidden="true" />
                       <span>{contact.form.sendAnotherLabel}</span>
@@ -291,11 +357,23 @@ export const ContactSection: React.FC = () => {
                     onSubmit={handleSubmit}
                     className="space-y-4"
                   >
+                    {/* Web3Forms Honeypot Anti-Spam Trap */}
+                    <input
+                      type="checkbox"
+                      name="botcheck"
+                      checked={botcheck}
+                      onChange={(e) => setBotcheck(e.target.checked)}
+                      tabIndex={-1}
+                      autoComplete="off"
+                      aria-hidden="true"
+                      className="hidden"
+                    />
+
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-1.5">
                         <label
                           htmlFor="contact-name"
-                          className="block text-xs font-mono font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300"
+                          className="block text-xs font-mono font-semibold uppercase tracking-wider text-[#1F2328] dark:text-slate-300"
                         >
                           {contact.form.nameLabel}
                         </label>
@@ -304,17 +382,19 @@ export const ContactSection: React.FC = () => {
                           name="name"
                           type="text"
                           required
+                          minLength={2}
+                          maxLength={100}
                           value={formValues.name}
                           onChange={handleChange}
                           placeholder={contact.form.namePlaceholder}
-                          className="w-full rounded-xl px-4 py-2.5 text-sm bg-slate-50 dark:bg-slate-950/70 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 border border-slate-200 dark:border-slate-800 focus:outline-none focus:border-emerald-600 dark:focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30 transition-colors duration-200"
+                          className="w-full rounded-xl px-4 py-2.5 text-sm bg-[#F6F8FA] dark:bg-[#0D1117] text-[#1F2328] dark:text-[#F0F6FC] placeholder:text-[#57606A]/70 dark:placeholder:text-[#8B949E]/70 border border-[#D0D7DE] dark:border-[#30363D] focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/25 transition-colors duration-200"
                         />
                       </div>
 
                       <div className="space-y-1.5">
                         <label
                           htmlFor="contact-email"
-                          className="block text-xs font-mono font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300"
+                          className="block text-xs font-mono font-semibold uppercase tracking-wider text-[#1F2328] dark:text-slate-300"
                         >
                           {contact.form.emailLabel}
                         </label>
@@ -323,10 +403,11 @@ export const ContactSection: React.FC = () => {
                           name="email"
                           type="email"
                           required
+                          maxLength={150}
                           value={formValues.email}
                           onChange={handleChange}
                           placeholder={contact.form.emailPlaceholder}
-                          className="w-full rounded-xl px-4 py-2.5 text-sm bg-slate-50 dark:bg-slate-950/70 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 border border-slate-200 dark:border-slate-800 focus:outline-none focus:border-emerald-600 dark:focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30 transition-colors duration-200"
+                          className="w-full rounded-xl px-4 py-2.5 text-sm bg-[#F6F8FA] dark:bg-[#0D1117] text-[#1F2328] dark:text-[#F0F6FC] placeholder:text-[#57606A]/70 dark:placeholder:text-[#8B949E]/70 border border-[#D0D7DE] dark:border-[#30363D] focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/25 transition-colors duration-200"
                         />
                       </div>
                     </div>
@@ -334,7 +415,7 @@ export const ContactSection: React.FC = () => {
                     <div className="space-y-1.5">
                       <label
                         htmlFor="contact-subject"
-                        className="block text-xs font-mono font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300"
+                        className="block text-xs font-mono font-semibold uppercase tracking-wider text-[#1F2328] dark:text-slate-300"
                       >
                         {contact.form.subjectLabel}
                       </label>
@@ -343,17 +424,19 @@ export const ContactSection: React.FC = () => {
                         name="subject"
                         type="text"
                         required
+                        minLength={2}
+                        maxLength={150}
                         value={formValues.subject}
                         onChange={handleChange}
                         placeholder={contact.form.subjectPlaceholder}
-                        className="w-full rounded-xl px-4 py-2.5 text-sm bg-slate-50 dark:bg-slate-950/70 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 border border-slate-200 dark:border-slate-800 focus:outline-none focus:border-emerald-600 dark:focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30 transition-colors duration-200"
+                        className="w-full rounded-xl px-4 py-2.5 text-sm bg-[#F6F8FA] dark:bg-[#0D1117] text-[#1F2328] dark:text-[#F0F6FC] placeholder:text-[#57606A]/70 dark:placeholder:text-[#8B949E]/70 border border-[#D0D7DE] dark:border-[#30363D] focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/25 transition-colors duration-200"
                       />
                     </div>
 
                     <div className="space-y-1.5">
                       <label
                         htmlFor="contact-message"
-                        className="block text-xs font-mono font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300"
+                        className="block text-xs font-mono font-semibold uppercase tracking-wider text-[#1F2328] dark:text-slate-300"
                       >
                         {contact.form.messageLabel}
                       </label>
@@ -362,19 +445,35 @@ export const ContactSection: React.FC = () => {
                         name="message"
                         rows={4}
                         required
+                        minLength={10}
+                        maxLength={2000}
                         value={formValues.message}
                         onChange={handleChange}
                         placeholder={contact.form.messagePlaceholder}
-                        className="w-full rounded-xl px-4 py-2.5 text-sm bg-slate-50 dark:bg-slate-950/70 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 border border-slate-200 dark:border-slate-800 focus:outline-none focus:border-emerald-600 dark:focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30 transition-colors duration-200 resize-y"
+                        className="w-full rounded-xl px-4 py-2.5 text-sm bg-[#F6F8FA] dark:bg-[#0D1117] text-[#1F2328] dark:text-[#F0F6FC] placeholder:text-[#57606A]/70 dark:placeholder:text-[#8B949E]/70 border border-[#D0D7DE] dark:border-[#30363D] focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/25 transition-colors duration-200 resize-y"
                       />
                     </div>
+
+                    {hasError && (
+                      <div
+                        role="alert"
+                        className="flex items-start gap-2.5 rounded-xl bg-rose-500/10 border border-rose-500/25 px-4 py-3 text-xs sm:text-sm text-rose-700 dark:text-rose-400"
+                      >
+                        <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" aria-hidden="true" />
+                        <span>{contact.form.errorMessage}</span>
+                      </div>
+                    )}
 
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-400 text-white dark:text-slate-950 shadow-sm dark:shadow-glow-emerald disabled:opacity-60 disabled:cursor-wait cursor-pointer transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-950"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white shadow-sm disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#F6F8FA] dark:focus-visible:ring-offset-[#0D1117]"
                     >
-                      <Send className="h-4 w-4" aria-hidden="true" />
+                      {isSubmitting ? (
+                        <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                      ) : (
+                        <Send className="h-4 w-4" aria-hidden="true" />
+                      )}
                       <span>
                         {isSubmitting ? contact.form.submittingLabel : contact.form.submitLabel}
                       </span>

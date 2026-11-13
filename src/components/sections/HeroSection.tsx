@@ -43,12 +43,6 @@ export const HeroSection: React.FC = () => {
       id="home"
       className="relative pt-32 sm:pt-36 pb-20 sm:pb-28 px-4 sm:px-6 overflow-hidden"
     >
-      {/* Subtle Spotlight Radial Glow */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute top-12 left-1/2 -translate-x-1/2 h-[440px] w-[820px] rounded-full bg-gradient-to-tr from-emerald-500/10 via-cyan-500/10 to-transparent blur-[110px]"
-      />
-
       <div className="relative max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
           {/* Left Column: Intro, Value Prop & CTAs */}
@@ -60,12 +54,12 @@ export const HeroSection: React.FC = () => {
           >
             {/* Headline */}
             <motion.div variants={itemVariants} className="space-y-3">
-              <p className="font-mono text-base sm:text-lg font-medium text-cyan-700 dark:text-cyan-400">
+              <p className="font-mono text-base sm:text-lg font-semibold text-blue-600 dark:text-blue-400">
                 {hero.greeting}
               </p>
-              <h1 className="text-4xl sm:text-5xl xl:text-[3.4rem] font-extrabold tracking-tight text-slate-900 dark:text-slate-50 leading-[1.12]">
+              <h1 className="text-4xl sm:text-5xl xl:text-[3.4rem] font-extrabold tracking-tight text-[#1F2328] dark:text-[#F0F6FC] leading-[1.12]">
                 {hero.name}
-                <span className="block mt-3 text-2xl sm:text-3xl xl:text-[2rem] font-bold leading-snug bg-gradient-to-r from-emerald-700 via-cyan-700 to-emerald-700 dark:from-emerald-400 dark:via-cyan-400 dark:to-emerald-300 bg-clip-text text-transparent">
+                <span className="block mt-3 text-2xl sm:text-3xl xl:text-[2rem] font-bold leading-snug text-blue-600 dark:text-blue-400">
                   {hero.role}
                 </span>
               </h1>
@@ -74,7 +68,7 @@ export const HeroSection: React.FC = () => {
             {/* Summary */}
             <motion.p
               variants={itemVariants}
-              className="text-lg sm:text-xl text-slate-600 dark:text-slate-300 leading-relaxed sm:leading-[1.75] max-w-xl"
+              className="text-lg sm:text-xl text-[#57606A] dark:text-[#8B949E] leading-relaxed sm:leading-[1.75] max-w-xl"
             >
               {hero.summary}
             </motion.p>
@@ -84,7 +78,7 @@ export const HeroSection: React.FC = () => {
               <div className="flex flex-wrap items-center gap-3.5">
                 <a
                   href="#projects"
-                  className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl font-semibold text-base bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-400 text-white dark:text-slate-950 shadow-sm dark:shadow-glow-emerald cursor-pointer transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-950"
+                  className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl font-semibold text-base bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white shadow-sm cursor-pointer transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#F6F8FA] dark:focus-visible:ring-offset-[#0D1117]"
                 >
                   <span>{hero.ctaProjects}</span>
                   <ArrowRight className="h-5 w-5" aria-hidden="true" />
@@ -94,7 +88,7 @@ export const HeroSection: React.FC = () => {
                   href={hero.cvUrl}
                   download={!isPlaceholderCv ? true : undefined}
                   onClick={handleCvClick}
-                  className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl font-semibold text-base bg-white/90 dark:bg-slate-900/70 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-700/80 hover:border-emerald-600/50 dark:hover:border-emerald-500/50 hover:text-emerald-700 dark:hover:text-emerald-300 shadow-sm dark:shadow-none backdrop-blur-md cursor-pointer transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+                  className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl font-semibold text-base bg-white dark:bg-[#161B22] text-[#1F2328] dark:text-[#F0F6FC] border border-[#D0D7DE] dark:border-[#30363D] dark:border-t-white/10 hover:bg-[#F6F8FA] dark:hover:bg-[#1C2128] hover:border-blue-500/50 dark:hover:border-blue-500/50 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                 >
                   <Download className="h-5 w-5" aria-hidden="true" />
                   <span>{hero.ctaCv}</span>
@@ -102,7 +96,7 @@ export const HeroSection: React.FC = () => {
 
                 <a
                   href="#contact"
-                  className="inline-flex items-center gap-2.5 px-5 py-3.5 rounded-xl font-semibold text-base text-slate-700 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-slate-100/80 dark:hover:bg-slate-800/60 cursor-pointer transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+                  className="inline-flex items-center gap-2.5 px-5 py-3.5 rounded-xl font-semibold text-base text-[#57606A] dark:text-[#8B949E] hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-500/10 cursor-pointer transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                 >
                   <Mail className="h-5 w-5" aria-hidden="true" />
                   <span>{hero.ctaContact}</span>
@@ -112,20 +106,20 @@ export const HeroSection: React.FC = () => {
               {showCvNotice && (
                 <div
                   aria-live="polite"
-                  className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-cyan-600/10 dark:bg-cyan-500/10 border border-cyan-600/25 dark:border-cyan-500/30 text-xs font-medium text-cyan-800 dark:text-cyan-300"
+                  className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-blue-500/10 border border-blue-500/20 text-xs font-medium text-blue-700 dark:text-blue-300"
                 >
-                  <ShieldCheck className="h-4 w-4 shrink-0" aria-hidden="true" />
+                  <ShieldCheck className="h-4 w-4 shrink-0 text-blue-600 dark:text-blue-400" aria-hidden="true" />
                   <span>{hero.cvNotice}</span>
                 </div>
               )}
             </motion.div>
           </motion.div>
 
-          {/* Right Column: Interactive Ubuntu Terminal + Spotlight Backdrop */}
+          {/* Right Column: Interactive Ubuntu Terminal + Subtle Blue/Cyan Ambient Glow */}
           <div className="lg:col-span-6 relative">
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute -inset-4 rounded-3xl bg-gradient-to-tr from-emerald-500/15 via-cyan-500/10 to-transparent blur-2xl opacity-70 dark:opacity-90"
+              className="pointer-events-none absolute -inset-6 rounded-3xl bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.18),rgba(6,182,212,0.09)_45%,transparent_72%)] blur-2xl opacity-75 dark:opacity-100"
             />
             <div className="relative">
               <InteractiveTerminal />

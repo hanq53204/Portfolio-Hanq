@@ -68,7 +68,6 @@ export interface SkillGroup {
   title: string;
   subtitle: string;
   icon: SkillIconKey;
-  accent: 'emerald' | 'cyan';
   skills: string[];
 }
 
@@ -175,6 +174,7 @@ export interface ContactData {
     submitLabel: string;
     submittingLabel: string;
     successMessage: string;
+    errorMessage: string;
     sendAnotherLabel: string;
   };
 }
@@ -191,14 +191,6 @@ export interface FooterData {
   copyright: string;
 }
 
-export interface PhaseShellData {
-  badge: string;
-  title: string;
-  subtitle: string;
-  checklistTitle: string;
-  checklistItems: string[];
-}
-
 export interface PortfolioContent {
   metaTitle: string;
   nav: NavData;
@@ -209,7 +201,6 @@ export interface PortfolioContent {
   experience: ExperienceData;
   contact: ContactData;
   footer: FooterData;
-  phaseShell: PhaseShellData;
 }
 
 export type BilingualPortfolioData = Record<Language, PortfolioContent>;

@@ -71,6 +71,7 @@ export const portfolioData: BilingualPortfolioData = {
             'Định hướng : System Engineering | Infrastructure Security | Monitoring & SecOps',
             'Phương châm: Hiểu sâu bản chất hệ thống, đọc log cẩn trọng, đo lường thực nghiệm',
             'Thói quen  : Duy trì 1–2 giờ thực hành Lab hạ tầng & bảo mật mỗi ngày.',
+            'Liên hệ    : ha.nq53204@gmail.com | github.com/hanq53204 | linkedin.com/in/qh8',
           ],
         },
         skills: {
@@ -135,7 +136,6 @@ export const portfolioData: BilingualPortfolioData = {
           title: 'System & OS Administration',
           subtitle: 'Quản trị máy chủ & hạ tầng mạng',
           icon: 'server',
-          accent: 'emerald',
           skills: [
             'Ubuntu / Linux Server',
             'Windows Server',
@@ -150,7 +150,6 @@ export const portfolioData: BilingualPortfolioData = {
           title: 'Monitoring & Containers',
           subtitle: 'Giám sát tài nguyên & container hóa',
           icon: 'activity',
-          accent: 'cyan',
           skills: [
             'Docker',
             'Prometheus',
@@ -165,7 +164,6 @@ export const portfolioData: BilingualPortfolioData = {
           title: 'Infrastructure Security & SecOps',
           subtitle: 'Gia cố hệ thống & phòng thủ hạ tầng',
           icon: 'shield',
-          accent: 'emerald',
           skills: [
             'System Hardening',
             'Infrastructure Security',
@@ -179,7 +177,6 @@ export const portfolioData: BilingualPortfolioData = {
           title: 'Languages & Engineering Workflow',
           subtitle: 'Tự động hóa, quy trình & xử lý sự cố',
           icon: 'terminal',
-          accent: 'cyan',
           skills: [
             'Python',
             'Bash',
@@ -318,20 +315,20 @@ export const portfolioData: BilingualPortfolioData = {
         {
           id: 'email',
           label: 'Email',
-          value: 'quangha.secops@example.com',
-          href: 'mailto:quangha.secops@example.com',
+          value: 'ha.nq53204@gmail.com',
+          href: 'mailto:ha.nq53204@gmail.com',
         },
         {
           id: 'github',
           label: 'GitHub',
-          value: 'github.com/quangha-sec',
-          href: 'https://github.com/',
+          value: 'github.com/hanq53204',
+          href: 'https://github.com/hanq53204',
         },
         {
           id: 'linkedin',
           label: 'LinkedIn',
-          value: 'linkedin.com/in/nguyenquangha',
-          href: 'https://linkedin.com/',
+          value: 'linkedin.com/in/qh8',
+          href: 'https://www.linkedin.com/in/qh8/',
         },
       ],
       form: {
@@ -347,6 +344,8 @@ export const portfolioData: BilingualPortfolioData = {
         submitLabel: 'Gửi tin nhắn',
         submittingLabel: 'Đang gửi...',
         successMessage: 'Cảm ơn bạn đã liên hệ! Tin nhắn đã được ghi nhận.',
+        errorMessage:
+          'Không thể gửi tin nhắn lúc này do lỗi kết nối hoặc máy chủ. Vui lòng thử lại hoặc gửi email trực tiếp qua ha.nq53204@gmail.com.',
         sendAnotherLabel: 'Gửi tin nhắn khác',
       },
     },
@@ -360,19 +359,6 @@ export const portfolioData: BilingualPortfolioData = {
       location: 'Phường Tân Sơn, TP. Hồ Chí Minh, Việt Nam',
       builtWith: 'Xây dựng với React, TypeScript, Tailwind CSS & Framer Motion',
       copyright: '© 2026 Nguyen Quang Ha. Bảo lưu mọi quyền.',
-    },
-    phaseShell: {
-      badge: 'Phase 1 hoàn tất · Nền tảng Design System & Global Context',
-      title: 'Khung giao diện Portfolio — Nguyen Quang Ha',
-      subtitle:
-        'Đã khởi tạo React + TypeScript + Vite + Tailwind CSS theo chuẩn UI/UX Pro Max với Font Tiếng Việt (Be Vietnam Pro & JetBrains Mono), Dark/Light Mode và Song ngữ VI / EN.',
-      checklistTitle: 'Trạng thái cấu hình Phase 1:',
-      checklistItems: [
-        'Cấu hình Font Tiếng Việt (Be Vietnam Pro) & kỹ thuật (JetBrains Mono)',
-        'Chế độ Dark Mode SecOps (#090D16) & Light Mode (#F8FAFC) lưu localStorage',
-        'Hệ thống dữ liệu song ngữ tách biệt hoàn toàn tại src/data/portfolioData.ts',
-        'Floating Glassmorphism Navbar (VI | EN + Dark/Light) & Footer kỹ thuật',
-      ],
     },
   },
   en: {
@@ -445,6 +431,7 @@ export const portfolioData: BilingualPortfolioData = {
             'Focus      : System Engineering | Infrastructure Security | Monitoring & SecOps',
             'Approach   : Deep system fundamentals, log analysis & empirical troubleshooting',
             'Routine    : 1–2 hours of hands-on infrastructure & security lab practice daily.',
+            'Contact    : ha.nq53204@gmail.com | github.com/hanq53204 | linkedin.com/in/qh8',
           ],
         },
         skills: {
@@ -509,7 +496,6 @@ export const portfolioData: BilingualPortfolioData = {
           title: 'System & OS Administration',
           subtitle: 'Server operations & network fundamentals',
           icon: 'server',
-          accent: 'emerald',
           skills: [
             'Ubuntu / Linux Server',
             'Windows Server',
@@ -524,7 +510,6 @@ export const portfolioData: BilingualPortfolioData = {
           title: 'Monitoring & Containers',
           subtitle: 'Telemetry, visualization & container runtime',
           icon: 'activity',
-          accent: 'cyan',
           skills: [
             'Docker',
             'Prometheus',
@@ -539,7 +524,6 @@ export const portfolioData: BilingualPortfolioData = {
           title: 'Infrastructure Security & SecOps',
           subtitle: 'Hardening, detection & defensive operations',
           icon: 'shield',
-          accent: 'emerald',
           skills: [
             'System Hardening',
             'Infrastructure Security',
@@ -553,7 +537,6 @@ export const portfolioData: BilingualPortfolioData = {
           title: 'Languages & Engineering Workflow',
           subtitle: 'Automation, version control & diagnostics',
           icon: 'terminal',
-          accent: 'cyan',
           skills: [
             'Python',
             'Bash',
@@ -692,20 +675,20 @@ export const portfolioData: BilingualPortfolioData = {
         {
           id: 'email',
           label: 'Email',
-          value: 'quangha.secops@example.com',
-          href: 'mailto:quangha.secops@example.com',
+          value: 'ha.nq53204@gmail.com',
+          href: 'mailto:ha.nq53204@gmail.com',
         },
         {
           id: 'github',
           label: 'GitHub',
-          value: 'github.com/quangha-sec',
-          href: 'https://github.com/',
+          value: 'github.com/hanq53204',
+          href: 'https://github.com/hanq53204',
         },
         {
           id: 'linkedin',
           label: 'LinkedIn',
-          value: 'linkedin.com/in/nguyenquangha',
-          href: 'https://linkedin.com/',
+          value: 'linkedin.com/in/qh8',
+          href: 'https://www.linkedin.com/in/qh8/',
         },
       ],
       form: {
@@ -721,6 +704,8 @@ export const portfolioData: BilingualPortfolioData = {
         submitLabel: 'Send Message',
         submittingLabel: 'Sending...',
         successMessage: 'Thank you for reaching out! Your message has been recorded.',
+        errorMessage:
+          'Unable to send your message due to a network or server error. Please try again or email me directly at ha.nq53204@gmail.com.',
         sendAnotherLabel: 'Send another message',
       },
     },
@@ -734,19 +719,6 @@ export const portfolioData: BilingualPortfolioData = {
       location: 'Tan Son Ward, Ho Chi Minh City, Vietnam',
       builtWith: 'Built with React, TypeScript, Tailwind CSS & Framer Motion',
       copyright: '© 2026 Nguyen Quang Ha. All rights reserved.',
-    },
-    phaseShell: {
-      badge: 'Phase 1 Complete · Design System & Global Context Ready',
-      title: 'Portfolio Application Shell — Nguyen Quang Ha',
-      subtitle:
-        'Initialized React + TypeScript + Vite + Tailwind CSS following UI/UX Pro Max standards with Vietnamese-ready typography (Be Vietnam Pro & JetBrains Mono), Dark/Light Mode, and Bilingual VI / EN switching.',
-      checklistTitle: 'Phase 1 Verification Summary:',
-      checklistItems: [
-        'Vietnamese typography (Be Vietnam Pro) & technical monospace (JetBrains Mono)',
-        'SecOps Dark Mode (#090D16) & clean Light Mode (#F8FAFC) persisted in localStorage',
-        'Decoupled bilingual data store located exclusively at src/data/portfolioData.ts',
-        'Floating Glassmorphism Navbar (VI | EN + Theme toggle) & technical Footer',
-      ],
     },
   },
 };

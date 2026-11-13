@@ -37,24 +37,21 @@ export const ExperienceSection: React.FC = () => {
           {/* Static Background Track */}
           <div
             aria-hidden="true"
-            className="absolute left-4 sm:left-5 top-3 bottom-3 w-0.5 rounded-full bg-slate-200 dark:bg-slate-800"
+            className="absolute left-4 sm:left-5 top-3 bottom-3 w-0.5 rounded-full bg-[#D0D7DE] dark:bg-[#30363D]"
           />
 
-          {/* Scroll-Linked Glowing Vertical Axis */}
+          {/* Scroll-Linked Cloud Blue-to-Emerald Vertical Axis */}
           <motion.div
             aria-hidden="true"
             style={{ scaleY, transformOrigin: 'top' }}
-            className="absolute left-4 sm:left-5 top-3 bottom-3 w-0.5 rounded-full bg-gradient-to-b from-emerald-500 via-cyan-400 to-emerald-500 shadow-[0_0_14px_rgba(16,185,129,0.65)]"
+            className="absolute left-4 sm:left-5 top-3 bottom-3 w-0.5 rounded-full bg-gradient-to-b from-blue-600 via-sky-500 to-emerald-500 dark:from-blue-500 dark:via-sky-400 dark:to-emerald-400"
           />
 
           {experience.items.map((item, index) => {
             const isEducation = item.type === 'education';
-            const nodeAccentClass = isEducation
-              ? 'border-cyan-600/50 dark:border-cyan-400/60 text-cyan-700 dark:text-cyan-300 shadow-[0_0_16px_rgba(6,182,212,0.22)]'
-              : 'border-emerald-600/50 dark:border-emerald-400/60 text-emerald-700 dark:text-emerald-300 shadow-[0_0_16px_rgba(16,185,129,0.25)]';
-            const cardHoverBorder = isEducation
-              ? 'hover:border-cyan-600/50 dark:hover:border-cyan-500/50'
-              : 'hover:border-emerald-600/50 dark:hover:border-emerald-500/50';
+            const nodeClass = isEducation
+              ? 'border-blue-500/40 text-blue-600 dark:text-blue-400'
+              : 'border-emerald-500/40 text-emerald-600 dark:text-emerald-400';
 
             return (
               <motion.article
@@ -72,7 +69,7 @@ export const ExperienceSection: React.FC = () => {
                 {/* Timeline Node Marker */}
                 <span
                   aria-hidden="true"
-                  className={`absolute -left-10 sm:-left-14 top-6 flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-white dark:bg-slate-950 border-2 ${nodeAccentClass}`}
+                  className={`absolute -left-10 sm:-left-14 top-6 flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-white dark:bg-[#0D1117] border-2 ${nodeClass}`}
                 >
                   {isEducation ? (
                     <GraduationCap className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -82,24 +79,24 @@ export const ExperienceSection: React.FC = () => {
                 </span>
 
                 {/* Milestone Card */}
-                <div className={`bento-card p-6 sm:p-8 space-y-4 ${cardHoverBorder}`}>
+                <div className="bento-card p-6 sm:p-8 space-y-4">
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div className="space-y-1">
-                      <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-50">
+                      <h3 className="text-lg sm:text-xl font-bold text-[#1F2328] dark:text-[#F0F6FC]">
                         {item.role}
                       </h3>
-                      <p className="text-sm font-medium text-cyan-700 dark:text-cyan-400">
+                      <p className="text-sm font-semibold text-blue-600 dark:text-blue-400">
                         {item.organization}
                       </p>
                     </div>
 
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl font-mono text-xs font-semibold bg-emerald-600/10 dark:bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-600/25 dark:border-emerald-500/30 shrink-0">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl font-mono text-xs font-semibold bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 shrink-0">
                       <Calendar className="h-3.5 w-3.5" aria-hidden="true" />
                       <span>{item.period}</span>
                     </span>
                   </div>
 
-                  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+                  <p className="text-sm sm:text-base text-[#57606A] dark:text-[#8B949E] leading-relaxed">
                     {item.description}
                   </p>
 
@@ -108,10 +105,10 @@ export const ExperienceSection: React.FC = () => {
                       {item.highlights.map((highlight, idx) => (
                         <li
                           key={idx}
-                          className="flex items-start gap-2.5 text-sm text-slate-700 dark:text-slate-300"
+                          className="flex items-start gap-2.5 text-sm text-[#1F2328] dark:text-slate-200"
                         >
                           <CheckCircle2
-                            className="h-4 w-4 mt-0.5 shrink-0 text-emerald-700 dark:text-emerald-400"
+                            className="h-4 w-4 mt-0.5 shrink-0 text-emerald-600 dark:text-emerald-400"
                             aria-hidden="true"
                           />
                           <span>{highlight}</span>
@@ -121,11 +118,11 @@ export const ExperienceSection: React.FC = () => {
                   )}
 
                   {item.tags.length > 0 && (
-                    <ul className="flex flex-wrap gap-2 pt-2 border-t border-slate-200/80 dark:border-slate-800/80">
+                    <ul className="flex flex-wrap gap-2 pt-3 border-t border-[#D0D7DE] dark:border-[#30363D]">
                       {item.tags.map((tag) => (
                         <li
                           key={tag}
-                          className="px-2.5 py-1 rounded-md font-mono text-xs font-medium bg-slate-100 dark:bg-slate-950/70 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800"
+                          className="px-2.5 py-1 rounded-md font-mono text-xs font-medium bg-blue-500/[0.07] dark:bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-500/20"
                         >
                           {tag}
                         </li>

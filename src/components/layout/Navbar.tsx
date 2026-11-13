@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
 import { Menu, Moon, ShieldCheck, Sun, X } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { portfolioData } from '../../data/portfolioData';
@@ -14,6 +14,13 @@ export const Navbar: React.FC = () => {
   const [activeSection, setActiveSection] = useState<SectionId>('home');
   const [scrolled, setScrolled] = useState(false);
 
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  });
+
   useEffect(() => {
     const sectionIds: SectionId[] = ['home', 'about', 'projects', 'experience', 'contact'];
 
@@ -21,7 +28,6 @@ export const Navbar: React.FC = () => {
       const scrollY = window.scrollY;
       setScrolled(scrollY > 16);
 
-      // Highlight the last section if the user reached the bottom of the page
       if (window.innerHeight + scrollY >= document.documentElement.scrollHeight - 40) {
         setActiveSection('contact');
         return;
@@ -67,10 +73,10 @@ export const Navbar: React.FC = () => {
       <div className="max-w-6xl mx-auto pointer-events-auto">
         <nav
           aria-label={nav.brandName}
-          className={`rounded-2xl px-4 sm:px-6 py-3 backdrop-blur-xl border transition-all duration-200 ${
+          className={`relative overflow-hidden rounded-2xl px-4 sm:px-6 py-3 backdrop-blur-md border transition-colors duration-200 ${
             scrolled
-              ? 'bg-white/90 dark:bg-slate-900/85 border-slate-200 dark:border-slate-800/90 shadow-glass-light dark:shadow-glass-dark'
-              : 'bg-white/80 dark:bg-slate-900/65 border-slate-200/80 dark:border-slate-800/70 shadow-sm dark:shadow-none'
+              ? 'bg-white/95 dark:bg-[#161B22]/95 border-[#D0D7DE] dark:border-[#30363D] dark:border-t-white/10 shadow-sm dark:shadow-lg dark:shadow-black/20'
+              : 'bg-white/90 dark:bg-[#161B22]/90 border-[#D0D7DE] dark:border-[#30363D] dark:border-t-white/10'
           }`}
         >
           <div className="flex items-center justify-between gap-3">
@@ -78,16 +84,16 @@ export const Navbar: React.FC = () => {
             <a
               href="#home"
               onClick={(e) => handleNavClick(e, 'home', '#home')}
-              className="group flex items-center gap-2.5 cursor-pointer rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+              className="group flex items-center gap-2.5 cursor-pointer rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
             >
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-600/10 dark:bg-emerald-500/15 border border-emerald-600/25 dark:border-emerald-500/30 text-emerald-700 dark:text-emerald-400 transition-colors duration-200 group-hover:border-emerald-500/60">
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600/10 dark:bg-blue-500/10 border border-blue-600/20 dark:border-blue-500/25 text-blue-600 dark:text-blue-400 transition-colors duration-200 group-hover:border-blue-600/40 dark:group-hover:border-blue-400/50">
                 <ShieldCheck className="h-5 w-5" aria-hidden="true" />
               </span>
               <div className="flex flex-col leading-tight">
-                <span className="text-sm sm:text-base font-bold tracking-tight text-slate-900 dark:text-slate-50">
+                <span className="text-sm sm:text-base font-bold tracking-tight text-[#1F2328] dark:text-[#F0F6FC]">
                   {nav.brandName}
                 </span>
-                <span className="font-mono text-[11px] font-medium text-emerald-700 dark:text-emerald-400">
+                <span className="font-mono text-[11px] font-medium text-blue-600 dark:text-blue-400">
                   {nav.brandTag}
                 </span>
               </div>
@@ -103,10 +109,10 @@ export const Navbar: React.FC = () => {
                       href={link.href}
                       onClick={(e) => handleNavClick(e, link.id, link.href)}
                       aria-current={isActive ? 'location' : undefined}
-                      className={`relative px-3.5 py-2 rounded-xl text-sm font-medium cursor-pointer transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${
+                      className={`relative px-3.5 py-2 rounded-xl text-sm font-medium border cursor-pointer transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
                         isActive
-                          ? 'text-emerald-700 dark:text-emerald-400 bg-emerald-600/10 dark:bg-emerald-500/10'
-                          : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-50 hover:bg-slate-100/80 dark:hover:bg-slate-800/60'
+                          ? 'text-blue-700 dark:text-blue-400 bg-blue-600/10 dark:bg-blue-500/10 border-blue-600/20 dark:border-blue-500/25'
+                          : 'text-[#57606A] dark:text-[#8B949E] border-transparent hover:text-[#1F2328] dark:hover:text-[#F0F6FC] hover:bg-[#F6F8FA] dark:hover:bg-[#1C2128]'
                       }`}
                     >
                       {link.label}
@@ -122,16 +128,16 @@ export const Navbar: React.FC = () => {
               <div
                 role="group"
                 aria-label={nav.languageAriaLabel}
-                className="inline-flex items-center rounded-xl p-1 bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/70"
+                className="inline-flex items-center rounded-xl p-1 bg-[#F6F8FA] dark:bg-[#0D1117] border border-[#D0D7DE] dark:border-[#30363D]"
               >
                 <button
                   type="button"
                   onClick={() => setLanguage('vi')}
                   aria-pressed={language === 'vi'}
-                  className={`px-2.5 py-1 rounded-lg font-mono text-xs font-semibold cursor-pointer transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${
+                  className={`px-2.5 py-1 rounded-lg font-mono text-xs font-semibold cursor-pointer transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
                     language === 'vi'
-                      ? 'bg-white dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 shadow-sm border border-slate-200/80 dark:border-emerald-500/40'
-                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 border border-transparent'
+                      ? 'bg-white dark:bg-[#161B22] text-blue-600 dark:text-blue-400 shadow-sm border border-[#D0D7DE] dark:border-[#30363D]'
+                      : 'text-[#57606A] dark:text-[#8B949E] hover:text-[#1F2328] dark:hover:text-[#F0F6FC] border border-transparent'
                   }`}
                 >
                   VI
@@ -140,10 +146,10 @@ export const Navbar: React.FC = () => {
                   type="button"
                   onClick={() => setLanguage('en')}
                   aria-pressed={language === 'en'}
-                  className={`px-2.5 py-1 rounded-lg font-mono text-xs font-semibold cursor-pointer transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${
+                  className={`px-2.5 py-1 rounded-lg font-mono text-xs font-semibold cursor-pointer transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
                     language === 'en'
-                      ? 'bg-white dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 shadow-sm border border-slate-200/80 dark:border-emerald-500/40'
-                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 border border-transparent'
+                      ? 'bg-white dark:bg-[#161B22] text-blue-600 dark:text-blue-400 shadow-sm border border-[#D0D7DE] dark:border-[#30363D]'
+                      : 'text-[#57606A] dark:text-[#8B949E] hover:text-[#1F2328] dark:hover:text-[#F0F6FC] border border-transparent'
                   }`}
                 >
                   EN
@@ -156,7 +162,7 @@ export const Navbar: React.FC = () => {
                 onClick={toggleTheme}
                 aria-label={theme === 'dark' ? nav.themeToLightLabel : nav.themeToDarkLabel}
                 title={theme === 'dark' ? nav.themeToLightLabel : nav.themeToDarkLabel}
-                className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/70 text-slate-700 dark:text-slate-200 hover:border-emerald-600/50 dark:hover:border-emerald-500/50 hover:text-emerald-700 dark:hover:text-emerald-400 cursor-pointer transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+                className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#F6F8FA] dark:bg-[#0D1117] border border-[#D0D7DE] dark:border-[#30363D] text-[#57606A] dark:text-[#8B949E] hover:border-blue-500/50 dark:hover:border-blue-500/50 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
               >
                 {theme === 'dark' ? (
                   <Sun className="h-4 w-4" aria-hidden="true" />
@@ -171,7 +177,7 @@ export const Navbar: React.FC = () => {
                 onClick={() => setMobileMenuOpen((prev) => !prev)}
                 aria-expanded={mobileMenuOpen}
                 aria-label={mobileMenuOpen ? nav.menuCloseLabel : nav.menuOpenLabel}
-                className="flex md:hidden h-9 w-9 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/70 text-slate-700 dark:text-slate-200 hover:border-emerald-600/50 dark:hover:border-emerald-500/50 cursor-pointer transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+                className="flex md:hidden h-9 w-9 items-center justify-center rounded-xl bg-[#F6F8FA] dark:bg-[#0D1117] border border-[#D0D7DE] dark:border-[#30363D] text-[#57606A] dark:text-[#8B949E] hover:border-blue-500/50 dark:hover:border-blue-500/50 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
               >
                 {mobileMenuOpen ? (
                   <X className="h-4 w-4" aria-hidden="true" />
@@ -192,7 +198,7 @@ export const Navbar: React.FC = () => {
                 transition={{ duration: 0.2, ease: 'easeOut' }}
                 className="overflow-hidden md:hidden"
               >
-                <ul className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-1">
+                <ul className="mt-3 pt-3 border-t border-[#D0D7DE] dark:border-[#30363D] flex flex-col gap-1">
                   {nav.links.map((link) => {
                     const isActive = activeSection === link.id;
                     return (
@@ -201,10 +207,10 @@ export const Navbar: React.FC = () => {
                           href={link.href}
                           onClick={(e) => handleNavClick(e, link.id, link.href)}
                           aria-current={isActive ? 'location' : undefined}
-                          className={`block px-3.5 py-2.5 rounded-xl text-sm font-medium cursor-pointer transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${
+                          className={`block px-3.5 py-2.5 rounded-xl text-sm font-medium border cursor-pointer transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
                             isActive
-                              ? 'text-emerald-700 dark:text-emerald-400 bg-emerald-600/10 dark:bg-emerald-500/10'
-                              : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/70'
+                              ? 'text-blue-700 dark:text-blue-400 bg-blue-600/10 dark:bg-blue-500/10 border-blue-600/20 dark:border-blue-500/25'
+                              : 'text-[#57606A] dark:text-[#8B949E] border-transparent hover:text-[#1F2328] dark:hover:text-[#F0F6FC] hover:bg-[#F6F8FA] dark:hover:bg-[#1C2128]'
                           }`}
                         >
                           {link.label}
@@ -216,9 +222,19 @@ export const Navbar: React.FC = () => {
               </motion.div>
             )}
           </AnimatePresence>
+
+          {/* Bottom-Edge Scroll Progress Bar */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#D0D7DE]/45 dark:bg-[#30363D]/60"
+          >
+            <motion.div
+              style={{ scaleX, transformOrigin: '0% 50%' }}
+              className="h-full w-full bg-gradient-to-r from-[#2563EB] via-[#3B82F6] to-[#06B6D4]"
+            />
+          </div>
         </nav>
       </div>
     </header>
   );
 };
-

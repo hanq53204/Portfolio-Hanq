@@ -19,11 +19,11 @@ const AppShell: React.FC = () => {
   }, [content.metaTitle]);
 
   return (
-    <div className="relative min-h-screen flex flex-col bg-secops-lightBg dark:bg-secops-bg text-slate-900 dark:text-slate-50 transition-colors duration-200">
-      {/* Subtle Technical Grid Background */}
+    <div className="relative min-h-screen flex flex-col bg-[#F6F8FA] dark:bg-[#0D1117] text-[#1F2328] dark:text-[#F0F6FC] transition-colors duration-200">
+      {/* Subtle Technical Dot-Grid Background */}
       <div
         aria-hidden="true"
-        className="pointer-events-none fixed inset-0 bg-tech-grid opacity-80 dark:opacity-100"
+        className="pointer-events-none fixed inset-0 bg-dot-grid"
       />
 
       <Navbar />
