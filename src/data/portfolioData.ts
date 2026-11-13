@@ -2,12 +2,12 @@ import type { BilingualPortfolioData } from '../types';
 
 export const portfolioData: BilingualPortfolioData = {
   vi: {
-    metaTitle: 'Nguyen Quang Ha | System & Infrastructure Security',
+    metaTitle: 'Nguyen Quang Ha | Portfolio',
     metaDescription:
-      'Portfolio cá nhân của Nguyen Quang Ha — System Engineering, Infrastructure Security, Monitoring & SecOps.',
+      'Portfolio cá nhân của Nguyen Quang Ha',
     nav: {
       brandName: 'Nguyen Quang Ha',
-      brandTag: 'secops.sys',
+      brandTag: 'System Engineer',
       skipToContentLabel: 'Chuyển đến nội dung chính',
       links: [
         { id: 'home', label: 'Trang chủ', href: '#home' },
@@ -35,9 +35,9 @@ export const portfolioData: BilingualPortfolioData = {
       cvNotice: 'File CV PDF sẽ sớm được đính kèm — vui lòng liên hệ trực tiếp qua mục Liên hệ.',
     },
     terminal: {
-      title: 'quangha@sec-ops: ~ (bash)',
+      title: 'quangha@sys: ~ (bash)',
       shellBadge: 'bash · utf-8',
-      promptUser: 'quangha@sec-ops:~$',
+      promptUser: 'quangha@sys:~$',
       welcomeLines: [
         'Ubuntu 24.04 LTS (GNU/Linux 6.8.0-secops x86_64)',
         'Chào mừng đến với Terminal tương tác của Nguyen Quang Ha.',
@@ -365,12 +365,12 @@ export const portfolioData: BilingualPortfolioData = {
     },
   },
   en: {
-    metaTitle: 'Nguyen Quang Ha | System & Infrastructure Security',
+    metaTitle: 'Nguyen Quang Ha | Portfolio',
     metaDescription:
       'Personal portfolio of Nguyen Quang Ha — System Engineering, Infrastructure Security, Monitoring & SecOps.',
     nav: {
       brandName: 'Nguyen Quang Ha',
-      brandTag: 'secops.sys',
+      brandTag: 'System Engineer',
       skipToContentLabel: 'Skip to main content',
       links: [
         { id: 'home', label: 'Home', href: '#home' },
@@ -398,9 +398,9 @@ export const portfolioData: BilingualPortfolioData = {
       cvNotice: 'CV PDF download will be attached soon — feel free to reach out via the Contact section.',
     },
     terminal: {
-      title: 'quangha@sec-ops: ~ (bash)',
+      title: 'quangha@sys: ~ (bash)',
       shellBadge: 'bash · utf-8',
-      promptUser: 'quangha@sec-ops:~$',
+      promptUser: 'quangha@sys:~$',
       welcomeLines: [
         'Ubuntu 24.04 LTS (GNU/Linux 6.8.0-secops x86_64)',
         "Welcome to Nguyen Quang Ha's interactive portfolio terminal.",
